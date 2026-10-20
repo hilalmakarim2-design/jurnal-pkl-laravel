@@ -1,23 +1,18 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Tentang Aplikasi') }}
+        </h2>
+    </x-slot>
 
-@section('title', 'Tentang Kami - PKL PT Metanouva Informatika')
-
-@section('content')
-    <div class="page-header">
-        <h1>Tentang Program PKL</h1>
-        <p>Profil singkat dan tujuan kegiatan pembelajaran di PT Metanouva Informatika.</p>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 text-gray-700 space-y-4">
+                <h3 class="text-2xl font-bold text-gray-900">Tentang Jurnal PKL</h3>
+                <p class="leading-relaxed">
+                    Aplikasi <strong>Jurnal Harian PKL</strong> dikembangkan untuk mempermudah peserta magang atau Praktik Kerja Lapangan dalam mendokumentasikan kegiatan harian, kendala teknis, serta rekapitulasi laporan magang secara terdigitalisasi.
+                </p>
+            </div>
+        </div>
     </div>
-
-    <div class="about-content">
-        <h2>PT Metanouva Informatika</h2>
-        <p>PT Metanouva Informatika adalah perusahaan yang bergerak di bidang teknologi informasi dan pengembangan perangkat lunak. Program PKL ini dirancang untuk membimbing peserta agar siap menghadapi standar industri dalam pengembangan web modern.</p>
-
-        <h3>Fokus Minggu Pertama</h3>
-        <ul>
-            <li>Pemahaman transisi konsep PHP Native ke Laravel.</li>
-            <li>Penyiapan lingkungan kerja (Composer, Laravel Artisan, Git).</li>
-            <li>Penguasaan alur utama Laravel: <strong>Route &rarr; Controller &rarr; View</strong>.</li>
-            <li>Penerapan sistem layout menggunakan Blade Template Engine.</li>
-        </ul>
-    </div>
-@endsection
+</x-app-layout>

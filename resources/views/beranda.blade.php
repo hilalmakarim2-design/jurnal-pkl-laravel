@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Beranda - PKL PT Metanouva Informatika')
+@section('title', 'Beranda User - PKL PT Metanouva Informatika')
 
 @section('content')
     <div class="hero-section">
-        <h1>Selamat Datang di Portal Proyek PKL</h1>
-        <p>Aplikasi web ini dikembangkan selama program Praktik Kerja Lapangan (PKL) di <strong>PT Metanouva Informatika</strong> sebagai bagian dari transisi dari PHP Native ke Laravel Framework.</p>
-        <a href="{{ url('/tentang') }}" class="btn-primary">Pelajari Lebih Lanjut</a>
+        <h1>Selamat Datang di Beranda, {{ Auth::user()->name }}! 👋</h1>
+        <p>Anda berhasil masuk ke <strong>Portal Proyek PKL PT Metanouva Informatika</strong> menggunakan akun email <strong>{{ Auth::user()->email }}</strong>.</p>
+        <div style="margin-top: 20px;">
+            <a href="{{ url('/tentang') }}" class="btn-primary">Pelajari Lebih Lanjut</a>
+        </div>
     </div>
 
     <div class="features-grid">

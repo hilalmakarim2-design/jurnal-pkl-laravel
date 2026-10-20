@@ -1,38 +1,20 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Hubungi Kami') }}
+        </h2>
+    </x-slot>
 
-@section('title', 'Kontak - PKL PT Metanouva Informatika')
-
-@section('content')
-    <div class="page-header">
-        <h1>Hubungi Kami</h1>
-        <p>Jika ada pertanyaan terkait proyek atau program PKL, silakan kirimkan pesan melalui formulir di bawah ini.</p>
-    </div>
-
-    <div class="contact-wrapper">
-        <form action="#" method="POST" class="contact-form" onsubmit="event.preventDefault(); alert('Ini adalah halaman contoh statis.');">
-            <div class="form-group">
-                <label for="nama">Nama Lengkap</label>
-                <input type="text" id="nama" name="nama" placeholder="Masukkan nama Anda" required>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 text-gray-700 space-y-4">
+                <h3 class="text-2xl font-bold text-gray-900">Pusat Layanan</h3>
+                <p class="leading-relaxed">Jika memiliki kendala teknis terkait penggunaan sistem ini, silakan hubungi tim pengembang:</p>
+                <ul class="list-disc list-inside space-y-1 text-gray-600">
+                    <li>Email: support@metanouva.co.id</li>
+                    <li>Program Internship / PKL PT Metanouva Informatika</li>
+                </ul>
             </div>
-
-            <div class="form-group">
-                <label for="email">Alamat Email</label>
-                <input type="email" id="email" name="email" placeholder="nama@email.com" required>
-            </div>
-
-            <div class="form-group">
-                <label for="pesan">Pesan / Masukan</label>
-                <textarea id="pesan" name="pesan" rows="5" placeholder="Tuliskan pesan Anda di sini..." required></textarea>
-            </div>
-
-            <button type="submit" class="btn-primary">Kirim Pesan</button>
-        </form>
-
-        <div class="contact-info">
-            <h3>Informasi Kantor</h3>
-            <p><strong>PT Metanouva Informatika</strong></p>
-            <p>Program Praktik Kerja Lapangan (PKL)</p>
-            <p>Email: pkl@metanouva.com</p>
         </div>
     </div>
-@endsection
+</x-app-layout>

@@ -6,15 +6,25 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    public function beranda() {
+    // Halaman khusus Guest (Pengunjung)
+    public function guestView()
+    {
+        return view('guest');
+    }
+
+    // Halaman Beranda khusus User yang sudah Login
+    public function beranda()
+    {
         return view('beranda');
     }
 
-    public function tentang() {
+    public function tentang()
+    {
         return view('tentang');
     }
 
-    public function kontak() {
+    public function kontak()
+    {
         return view('kontak');
     }
 }

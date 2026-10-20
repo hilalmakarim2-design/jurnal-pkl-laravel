@@ -19,10 +19,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'asal_sekolah',
         'name',
         'email',
         'password',
     ];
+
+public function jurnals() { return $this->hasMany(Jurnal::class); }
 
     /**
      * The attributes that should be hidden for serialization.
