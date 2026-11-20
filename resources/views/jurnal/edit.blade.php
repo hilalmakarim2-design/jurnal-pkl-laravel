@@ -8,13 +8,23 @@
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <form action="{{ route('jurnal.update', $jurnal->id) }}" method="POST">
+                <form action="{{ route('jurnal.update', $jurnal->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     
                     <div class="mb-4">
+                        <label class="block font-medium text-sm text-gray-700">Kategori Kegiatan</label>
+                        <select name="kategori_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach($kategoris as $k)
+                                <option value="{{ $k->id }}" {{ $jurnal->kategori_id == $k->id ? 'selected' : '' }}>{{ $k->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
                         <label class="block font-medium text-sm text-gray-700">Tanggal Kegiatan</label>
-                        <input type="date" name="tanggal" value="{{ $jurnal->tanggal }}" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                        <input type="date" name="tanggal" value="{{ $jurnal->tanggal->format('Y-m-d') }}" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                     </div>
 
                     <div class="mb-4">
@@ -39,6 +49,14 @@
                     <div class="mb-4">
                         <label class="block font-medium text-sm text-gray-700">Kendala (Opsional)</label>
                         <textarea name="kendala" rows="2" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">{{ $jurnal->kendala }}</textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block font-medium text-sm text-gray-700">Unggah Lampiran Baru (Opsional)</label>
+                        <input type="file" name="lampiran" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        @if($jurnal->lampiran)
+                            <p class="text-xs text-gray-500 mt-1">File saat ini: <a href="{{ asset('storage/' . $jurnal->lampiran) }}" target="_blank" class="text-indigo-600 underline">Lihat Lampiran</a></p>
+                        @endif
                     </div>
 
                     <div class="flex items-center justify-end mt-4">

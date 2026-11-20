@@ -1,68 +1,88 @@
 <!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'Jurnal Harian PKL' }}</title>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+      x-data="{ 
+          theme: localStorage.getItem('theme') || 'light',
+          setTheme(val) {
+              this.theme = val;
+              localStorage.setItem('theme', val);
+              document.documentElement.classList.remove('dark', 'theme-pink');
+              if (val === 'dark') document.documentElement.classList.add('dark');
+              if (val === 'pink') document.documentElement.classList.add('theme-pink');
+          }
+      }"
+      x-init="setTheme(theme)"
+      :class="{ 'dark': theme === 'dark', 'theme-pink': theme === 'pink' }">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Import Tailwind CSS & JS via Vite -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col justify-between">
+        <title>{{ config('app.name', 'Jurnal PKL') }}</title>
 
-    <!-- NAVBAR / HEADER -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
-            
-            <!-- Logo & Brand -->
-            <div class="flex items-center space-x-3">
-                <a href="{{ url('/') }}" class="font-bold text-xl text-indigo-600 flex items-center gap-2">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                    </svg>
-                    <span>Jurnal PKL</span>
-                </a>
-            </div>
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-            <!-- Menu Navigasi Utama -->
-            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
-                <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'text-indigo-600 font-semibold' : 'text-gray-600 hover:text-indigo-600' }} transition">Beranda</a>
-                <a href="{{ url('/tentang') }}" class="{{ request()->is('tentang') ? 'text-indigo-600 font-semibold' : 'text-gray-600 hover:text-indigo-600' }} transition">Tentang</a>
-                <a href="{{ url('/kontak') }}" class="{{ request()->is('kontak') ? 'text-indigo-600 font-semibold' : 'text-gray-600 hover:text-indigo-600' }} transition">Kontak</a>
-            </nav>
-
-            <!-- Tombol Login / Register / Dashboard -->
-            <div class="flex items-center space-x-3">
-                @auth
-                    <a href="{{ url('/dashboard') }}" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition">
-                        Ke Dashboard
-                    </a>
-                @else
-                    <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition">
-                        Masuk
-                    </a>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition">
-                            Daftar
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body class="font-sans text-gray-900 dark:text-gray-100 antialiased bg-gray-100 dark:bg-gray-900 transition-colors min-h-screen flex flex-col">
+        <!-- Guest Navbar -->
+        <nav class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 transition-colors">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16 items-center">
+                    <!-- Nav Kiri: Hanya Brand & Beranda -->
+                    <div class="flex items-center space-x-8">
+                        <a href="{{ route('home') }}" class="font-bold text-xl text-indigo-600 dark:text-indigo-400">
+                            Jurnal PKL
                         </a>
-                    @endif
-                @endauth
+                        <a href="{{ route('home') }}" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 transition">
+                            Beranda
+                        </a>
+                    </div>
+
+                    <!-- Nav Kanan: Switcher 3 Mode Tema & Auth -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Dropdown 3 Mode Tema (Light, Dark, Pink) -->
+                        <div class="relative" x-data="{ openTheme: false }">
+                            <button @click="openTheme = !openTheme" type="button" class="p-2 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition focus:outline-none flex items-center space-x-1" title="Pilih Tema Tampilan">
+                                <span x-show="theme === 'light'">☀️</span>
+                                <span x-show="theme === 'dark'">🌙</span>
+                                <span x-show="theme === 'pink'">🌸</span>
+                            </button>
+
+                            <div x-show="openTheme" @click.away="openTheme = false" x-transition class="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                                <button @click="setTheme('light'); openTheme = false" class="w-full text-left px-4 py-2 text-xs font-semibold flex items-center space-x-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <span>☀️ Light Mode</span>
+                                </button>
+                                <button @click="setTheme('dark'); openTheme = false" class="w-full text-left px-4 py-2 text-xs font-semibold flex items-center space-x-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <span>🌙 Dark Mode</span>
+                                </button>
+                                <button @click="setTheme('pink'); openTheme = false" class="w-full text-left px-4 py-2 text-xs font-semibold flex items-center space-x-2 hover:bg-pink-100 dark:hover:bg-pink-950 text-pink-600 dark:text-pink-300">
+                                    <span>🌸 Pink Mode</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Masuk / Daftar -->
+                        <div class="flex items-center space-x-3">
+                            <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-indigo-600">Masuk</a>
+                            <a href="{{ route('register') }}" class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition">Daftar</a>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </nav>
 
+        <!-- Form Card Container -->
+        <div class="flex-grow flex flex-col sm:justify-center items-center py-6 sm:py-12 bg-gray-100 dark:bg-gray-900">
+            <div class="w-full sm:max-w-md px-6 py-6 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-2xl border border-gray-200 dark:border-gray-700">
+                {{ $slot }}
+            </div>
         </div>
-    </header>
 
-    <!-- CONTENT UTAMA -->
-    <main class="mb-auto">
-        {{ $slot }}
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-white border-t border-gray-200 mt-12 py-6">
-        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
+        <footer class="py-4 text-center text-xs text-gray-500 dark:text-gray-400">
             &copy; {{ date('Y') }} Jurnal Harian PKL. All rights reserved.
-        </div>
-    </footer>
-
-</body>
+        </footer>
+    </body>
 </html>

@@ -2,31 +2,56 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JurnalController;
+use App\Http\Controllers\KomentarController;
+use App\Http\Controllers\ExportController;
+use App\Models\Jurnal;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Halaman Publik (Tamu & User Terdaftar Bisa Akses)
+// Tampilkan halaman Landing Page / Beranda Publik sebelum login
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/tentang', function () {
-    return view('tentang');
-})->name('tentang');
-
-Route::get('/kontak', function () {
-    return view('kontak');
-})->name('kontak');
-
-// Halaman Khusus Pengguna Terautentikasi (Wajib Login)
 Route::middleware(['auth', 'verified'])->group(function () {
     
-    // Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
+    // Dashboard Agregasi Multi-Role
+    Route::get('/dashboard', function (Request $request) {
+        $user = auth()->user();
+        $baseQuery = Jurnal::query();
+
+        if ($user->isPeserta()) {
+            $baseQuery->where('user_id', $user->id);
+        }
+
+        $totalJurnal = (clone $baseQuery)->count();
+        $totalSelesai = (clone $baseQuery)->whereIn('status', ['selesai', 'SELESAI', 'Selesai'])->count();
+        $totalProses = (clone $baseQuery)->whereIn('status', ['proses', 'PROSES', 'Proses', 'todo', 'TODO', 'Todo'])->count();
+
+        $persentaseSelesai = $totalJurnal > 0 ? round(($totalSelesai / $totalJurnal) * 100) : 0;
+
+        return view('dashboard', compact('totalJurnal', 'totalSelesai', 'totalProses', 'persentaseSelesai'));
     })->name('dashboard');
 
-    // CRUD Jurnal Harian PKL
+    // Route Resource Jurnal
     Route::resource('jurnal', JurnalController::class);
+
+    // Route Komentar (Khusus Pembimbing)
+    Route::post('/jurnal/{jurnal}/komentar', [KomentarController::class, 'store'])
+        ->name('komentar.store');
+
+    // Route Export PDF Rekap Jurnal
+    Route::get('/export/jurnal-pdf', [ExportController::class, 'exportPdf'])
+        ->name('jurnal.export_pdf');
+
+    // Route Khusus Pembimbing (Monitoring All Peserta)
+    Route::middleware('role:pembimbing')->group(function () {
+        Route::get('/pembimbing/monitoring', function () {
+            $pesertas = User::where('role', 'peserta')->get();
+            return view('pembimbing.monitoring', compact('pesertas'));
+        })->name('pembimbing.monitoring');
+    });
 
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" 
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
       x-data="{ 
-          darkMode: localStorage.getItem('darkMode') === 'true',
-          toggleDarkMode() {
-              this.darkMode = !this.darkMode;
-              localStorage.setItem('darkMode', this.darkMode);
-              if (this.darkMode) {
-                  document.documentElement.classList.add('dark');
-              } else {
-                  document.documentElement.classList.remove('dark');
-              }
+          theme: localStorage.getItem('theme') || 'light',
+          setTheme(val) {
+              this.theme = val;
+              localStorage.setItem('theme', val);
+              document.documentElement.classList.remove('dark', 'theme-pink');
+              if (val === 'dark') document.documentElement.classList.add('dark');
+              if (val === 'pink') document.documentElement.classList.add('theme-pink');
           }
-      }" 
-      x-init="if (darkMode) { document.documentElement.classList.add('dark'); } else { document.documentElement.classList.remove('dark'); }"
-      class="h-full">
+      }"
+      x-init="setTheme(theme)"
+      :class="{ 'dark': theme === 'dark', 'theme-pink': theme === 'pink' }">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,33 +21,71 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
 
-        <!-- Scripts & Styles -->
+        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+<style>
+    /* CSS Khusus Mode Pink */
+    html.theme-pink body {
+        background-color: #fdf2f8 !important;
+        color: #831843 !important;
+    }
+    html.theme-pink .card-banner {
+        background-color: #fff1f2 !important;
+        border-color: #f472b6 !important;
+    }
+    html.theme-pink .text-banner-title {
+        color: #831843 !important;
+    }
+    html.theme-pink .text-banner-desc {
+        color: #9d174d !important;
+    }
+
+    /* CSS Khusus Mode Light */
+    html:not(.dark):not(.theme-pink) body {
+        background-color: #f8fafc !important;
+        color: #0f172a !important;
+    }
+    html:not(.dark):not(.theme-pink) .card-banner {
+        background-color: #ffffff !important;
+        border-color: #cbd5e1 !important;
+    }
+    html:not(.dark):not(.theme-pink) .text-banner-title {
+        color: #0f172a !important;
+    }
+    html:not(.dark):not(.theme-pink) .text-banner-desc {
+        color: #334155 !important;
+    }
+
+    /* CSS Khusus Mode Dark (Kembali Sempurna Bawaan Tailwind) */
+    html.dark .card-banner {
+        background-color: #0f172a !important;
+        border-color: #1e293b !important;
+    }
+    html.dark .text-banner-title {
+        color: #ffffff !important;
+    }
+    html.dark .text-banner-desc {
+        color: #e2e8f0 !important;
+    }
+</style>
     </head>
-    <body class="font-sans antialiased bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col justify-between transition-colors duration-200">
+    <body class="font-sans antialiased bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors min-h-screen">
         <div class="min-h-screen">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white dark:bg-gray-900 shadow border-b border-gray-200 dark:border-gray-800 transition-colors">
+            @if (isset($header))
+                <header class="bg-white dark:bg-gray-800 shadow border-b border-gray-200 dark:border-gray-700">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
-            @endisset
+            @endif
 
-            <!-- Page Content -->
-            <main class="py-6">
+            <main>
                 {{ $slot }}
             </main>
         </div>
-
-        <!-- Footer -->
-        <footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-4 text-center text-sm text-gray-500 dark:text-gray-400 transition-colors">
-            &copy; {{ date('Y') }} Jurnal Harian PKL - PT Metanouva Informatika. All rights reserved.
-        </footer>
     </body>
 </html>

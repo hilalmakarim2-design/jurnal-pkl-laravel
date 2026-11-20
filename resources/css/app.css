@@ -1,3 +1,74 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ==========================================
+   CUSTOM TEMA PINK (PINK MODE)
+   ========================================== */
+
+/* Background Utama Halaman */
+html.theme-pink body {
+    background-color: #fdf2f8 !important; /* bg-pink-50 */
+    color: #831843 !important; /* text-pink-900 */
+}
+
+/* Navbar & Kartu Konten Utama */
+html.theme-pink nav,
+html.theme-pink .bg-white,
+html.theme-pink .dark\:bg-gray-900,
+html.theme-pink .dark\:bg-gray-800 {
+    background-color: #fce7f3 !important; /* bg-pink-100 */
+    border-color: #fbcfe8 !important; /* border-pink-200 */
+}
+
+/* Header & Teks Judul Utama */
+html.theme-pink header,
+html.theme-pink h1,
+html.theme-pink h2,
+html.theme-pink h3,
+html.theme-pink h4,
+html.theme-pink .text-gray-900,
+html.theme-pink .text-gray-800,
+html.theme-pink .dark\:text-white,
+html.theme-pink .dark\:text-gray-100,
+html.theme-pink .dark\:text-gray-200 {
+    color: #831843 !important; /* text-pink-900 */
+}
+
+/* Teks Sekunder / Keterangan */
+html.theme-pink .text-gray-600,
+html.theme-pink .text-gray-500,
+html.theme-pink .dark\:text-gray-400 {
+    color: #9d174d !important; /* text-pink-800 */
+}
+
+/* Element Utama (Tombol Utama & Highlight) */
+html.theme-pink .bg-indigo-600,
+html.theme-pink .hover\:bg-indigo-700:hover {
+    background-color: #ec4899 !important; /* bg-pink-500 */
+    color: #ffffff !important;
+}
+
+html.theme-pink .text-indigo-600,
+html.theme-pink .dark\:text-indigo-400 {
+    color: #db2777 !important; /* text-pink-600 */
+}
+
+/* Form Input & Select */
+html.theme-pink input,
+html.theme-pink select,
+html.theme-pink textarea {
+    background-color: #ffffff !important;
+    border-color: #fbcfe8 !important;
+    color: #831843 !important;
+}
+
+/* Table Header & Borders */
+html.theme-pink table thead tr,
+html.theme-pink table tbody tr {
+    border-color: #fbcfe8 !important;
+}
+
+html.theme-pink table thead th {
+    color: #9d174d !important;
+}
