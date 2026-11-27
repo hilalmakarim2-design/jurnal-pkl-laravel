@@ -20,23 +20,6 @@
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div class="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
-                        <p class="text-xs font-black text-gray-600 dark:text-gray-400 uppercase tracking-wider">TOTAL SELURUH JURNAL</p>
-                        <h3 class="text-3xl font-black text-gray-900 dark:text-white mt-1">{{ $totalJurnal }}</h3>
-                    </div>
-
-                    <div class="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
-                        <p class="text-xs font-black text-emerald-600 uppercase tracking-wider">JURNAL SELESAI</p>
-                        <h3 class="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-1">{{ $totalSelesai }}</h3>
-                    </div>
-
-                    <div class="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
-                        <p class="text-xs font-black text-amber-600 uppercase tracking-wider">PROSES / TODO</p>
-                        <h3 class="text-3xl font-black text-amber-600 dark:text-amber-400 mt-1">{{ $totalProses }}</h3>
-                    </div>
-                </div>
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <a href="{{ route('pembimbing.monitoring') }}" class="p-6 bg-indigo-600 text-white rounded-3xl shadow-md hover:bg-indigo-700 transition flex justify-between items-center">
                         <div>
