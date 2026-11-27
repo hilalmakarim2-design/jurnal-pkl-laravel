@@ -15,12 +15,12 @@ class UpdateJurnalRequest extends FormRequest
     {
         return [
             'kategori_id' => 'nullable|exists:kategoris,id',
-            'tanggal'     => 'required|date',
-            'judul'       => 'required|string|max:255',
-            'deskripsi'   => 'required|string',
-            'status'      => 'required|in:todo,proses,selesai',
-            'kendala'     => 'nullable|string',
-            'lampiran'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'tanggal' => 'required|date',
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'status' => 'required|in:todo,proses,selesai',
+            'kendala' => 'nullable|string',
+            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 }

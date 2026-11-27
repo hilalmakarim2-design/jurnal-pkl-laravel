@@ -19,7 +19,7 @@ class JurnalResource extends JsonResource
             'deskripsi' => $this->deskripsi,
             'status' => $this->status,
             'kendala' => $this->kendala,
-            'lampiran_url' => $this->lampiran ? asset('storage/' . $this->lampiran) : null,
+            'lampiran_url' => $this->lampiran ? asset('storage/'.$this->lampiran) : null,
             'dibuat_pada' => $this->created_at?->toDateTimeString(),
             'diperbarui_pada' => $this->updated_at?->toDateTimeString(),
         ];

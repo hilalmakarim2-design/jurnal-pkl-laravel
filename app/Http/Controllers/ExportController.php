@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jurnal;
-use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 
 class ExportController extends Controller
 {
@@ -28,6 +28,7 @@ class ExportController extends Controller
         $jurnals = $query->orderBy('tanggal', 'asc')->get();
 
         $pdf = Pdf::loadView('exports.jurnal_pdf', compact('jurnals'));
-        return $pdf->download('Rekap_Jurnal_PKL_' . date('Ymd_His') . '.pdf');
+
+        return $pdf->download('Rekap_Jurnal_PKL_'.date('Ymd_His').'.pdf');
     }
 }

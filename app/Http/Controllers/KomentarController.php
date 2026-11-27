@@ -20,8 +20,8 @@ class KomentarController extends Controller
 
         Komentar::create([
             'jurnal_id' => $jurnal->id,
-            'user_id'   => auth()->id(),
-            'isi'       => $request->isi,
+            'user_id' => auth()->id(),
+            'isi' => $request->isi,
         ]);
 
         return back()->with('success', 'Catatan pembimbing berhasil ditambahkan.');

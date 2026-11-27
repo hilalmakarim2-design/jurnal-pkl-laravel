@@ -25,10 +25,10 @@ class Jurnal extends Model
         'tanggal' => 'date',
     ];
 
-public function komentars()
-{
-    return $this->hasMany(Komentar::class)->latest();
-}
+    public function komentars()
+    {
+        return $this->hasMany(Komentar::class)->latest();
+    }
 
     public function user(): BelongsTo
     {

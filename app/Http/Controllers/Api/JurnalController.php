@@ -50,7 +50,7 @@ class JurnalController extends Controller
     {
         $jurnal = Jurnal::with('kategori')->find($id);
 
-        if (!$jurnal) {
+        if (! $jurnal) {
             return response()->json(['status' => false, 'message' => 'Jurnal tidak ditemukan'], 404);
         }
 
@@ -69,7 +69,7 @@ class JurnalController extends Controller
     {
         $jurnal = Jurnal::find($id);
 
-        if (!$jurnal) {
+        if (! $jurnal) {
             return response()->json(['status' => false, 'message' => 'Jurnal tidak ditemukan'], 404);
         }
 
@@ -99,7 +99,7 @@ class JurnalController extends Controller
     {
         $jurnal = Jurnal::find($id);
 
-        if (!$jurnal) {
+        if (! $jurnal) {
             return response()->json(['status' => false, 'message' => 'Jurnal tidak ditemukan'], 404);
         }
 

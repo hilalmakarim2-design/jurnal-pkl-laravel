@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\KomentarController;
-use App\Http\Controllers\ExportController;
+use App\Http\Controllers\ProfileController;
 use App\Models\Jurnal;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    
+
     // Dashboard Agregasi Multi-Role
     Route::get('/dashboard', function (Request $request) {
         $user = auth()->user();
@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('role:pembimbing')->group(function () {
         Route::get('/pembimbing/monitoring', function () {
             $pesertas = User::where('role', 'peserta')->get();
+
             return view('pembimbing.monitoring', compact('pesertas'));
         })->name('pembimbing.monitoring');
     });

@@ -18,7 +18,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json([
                 'status' => false,
                 'message' => 'Email atau password salah.',
@@ -39,7 +39,7 @@ class AuthController extends Controller
                 ],
                 'token' => $token,
                 'token_type' => 'Bearer',
-            ]
+            ],
         ], 200);
     }
 

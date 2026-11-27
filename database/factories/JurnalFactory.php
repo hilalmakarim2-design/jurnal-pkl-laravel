@@ -14,13 +14,13 @@ class JurnalFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id'     => User::factory(),
+            'user_id' => User::factory(),
             'kategori_id' => Kategori::inRandomOrder()->first()?->id ?? Kategori::factory(),
-            'tanggal'     => fake()->date(),
-            'judul'       => fake()->sentence(4),
-            'deskripsi'   => fake()->paragraph(),
-            'status'      => fake()->randomElement(['todo', 'proses', 'selesai']),
-            'kendala'     => fake()->optional()->sentence(),
+            'tanggal' => fake()->date(),
+            'judul' => fake()->sentence(4),
+            'deskripsi' => fake()->paragraph(),
+            'status' => fake()->randomElement(['todo', 'proses', 'selesai']),
+            'kendala' => fake()->optional()->sentence(),
         ];
     }
 }

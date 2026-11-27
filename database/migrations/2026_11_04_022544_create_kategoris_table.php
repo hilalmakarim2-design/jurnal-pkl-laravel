@@ -10,13 +10,13 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('kategoris', function (Blueprint $table) {
-        $table->id();
-        $table->string('nama'); // <-- Pastikan baris ini ditambahkan!
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('kategoris', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama'); // <-- Pastikan baris ini ditambahkan!
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.

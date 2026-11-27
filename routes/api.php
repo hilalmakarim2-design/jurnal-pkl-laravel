@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\JurnalController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 // Endpoint Publik (Tanpa Token)
 Route::post('/login', [AuthController::class, 'login']);

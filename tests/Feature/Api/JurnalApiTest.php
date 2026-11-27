@@ -92,7 +92,7 @@ class JurnalApiTest extends TestCase
         $this->putJson("/api/jurnals/{$jurnal->id}", [
             'judul' => 'Judul Baru Diperbarui',
         ])->assertStatus(200)
-          ->assertJsonFragment(['judul' => 'Judul Baru Diperbarui']);
+            ->assertJsonFragment(['judul' => 'Judul Baru Diperbarui']);
 
         $this->deleteJson("/api/jurnals/{$jurnal->id}")
             ->assertStatus(200);
