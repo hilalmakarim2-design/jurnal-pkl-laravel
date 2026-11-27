@@ -90,7 +90,11 @@ class JurnalApiTest extends TestCase
         Sanctum::actingAs($user);
 
         $this->putJson("/api/jurnals/{$jurnal->id}", [
+            'kategori_id' => $jurnal->kategori_id,
+            'tanggal' => '2026-11-18',
             'judul' => 'Judul Baru Diperbarui',
+            'deskripsi' => 'Deskripsi diperbarui melalui API',
+            'status' => 'selesai',
         ])->assertStatus(200)
             ->assertJsonFragment(['judul' => 'Judul Baru Diperbarui']);
 
@@ -110,7 +114,15 @@ class JurnalApiTest extends TestCase
         Sanctum::actingAs($userA);
 
         $this->getJson("/api/jurnals/{$jurnalMilikB->id}")->assertStatus(403);
-        $this->putJson("/api/jurnals/{$jurnalMilikB->id}", ['judul' => 'Hack'])->assertStatus(403);
+
+        $this->putJson("/api/jurnals/{$jurnalMilikB->id}", [
+            'kategori_id' => $jurnalMilikB->kategori_id,
+            'tanggal' => '2026-11-18',
+            'judul' => 'Hack',
+            'deskripsi' => 'Percobaan ubah data milik orang lain',
+            'status' => 'selesai',
+        ])->assertStatus(403);
+
         $this->deleteJson("/api/jurnals/{$jurnalMilikB->id}")->assertStatus(403);
     }
 }

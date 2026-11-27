@@ -3,115 +3,86 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\JurnalResource;
+use App\Http\Requests\StoreJurnalRequest;
+use App\Http\Requests\UpdateJurnalRequest;
 use App\Models\Jurnal;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class JurnalController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index(Request $request)
     {
-        $jurnals = Jurnal::with('kategori')
-            ->where('user_id', $request->user()->id)
-            ->latest()
-            ->get();
+        $this->authorize('viewAny', Jurnal::class);
+
+        $user = auth()->user();
+        $filters = $request->only(['search', 'tanggal', 'status', 'kategori_id', 'user_id']);
+
+        if ($user->isPeserta()) {
+            $filters['user_id'] = $user->id;
+        }
+
+        $jurnals = Jurnal::with(['kategori', 'user'])
+            ->filter($filters)
+            ->latest('tanggal')
+            ->paginate(10);
 
         return response()->json([
-            'status' => true,
-            'message' => 'Daftar jurnal berhasil diambil',
-            'data' => JurnalResource::collection($jurnals),
-        ], 200);
+            'status' => 'success',
+            'data' => $jurnals,
+        ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreJurnalRequest $request)
     {
-        $validated = $request->validate([
-            'kategori_id' => 'required|exists:kategoris,id',
-            'tanggal' => 'required|date',
-            'judul' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
-            'status' => 'nullable|in:todo,proses,selesai,disetujui,ditolak',
-            'kendala' => 'nullable|string',
-        ]);
+        $this->authorize('create', Jurnal::class);
 
-        $validated['user_id'] = $request->user()->id;
-        $validated['status'] = $validated['status'] ?? 'proses';
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->id();
 
         $jurnal = Jurnal::create($validated);
 
         return response()->json([
-            'status' => true,
-            'message' => 'Jurnal berhasil ditambahkan',
-            'data' => new JurnalResource($jurnal->load('kategori')),
+            'status' => 'success',
+            'message' => 'Jurnal berhasil dibuat',
+            'data' => $jurnal,
         ], 201);
     }
 
-    public function show(Request $request, $id)
+    public function show(Jurnal $jurnal)
     {
-        $jurnal = Jurnal::with('kategori')->find($id);
-
-        if (! $jurnal) {
-            return response()->json(['status' => false, 'message' => 'Jurnal tidak ditemukan'], 404);
-        }
-
-        if ($jurnal->user_id !== $request->user()->id) {
-            return response()->json(['status' => false, 'message' => 'Akses ditolak. Bukan jurnal milik Anda.'], 403);
-        }
+        $this->authorize('view', $jurnal);
 
         return response()->json([
-            'status' => true,
-            'message' => 'Detail jurnal berhasil diambil',
-            'data' => new JurnalResource($jurnal),
-        ], 200);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $jurnal = Jurnal::find($id);
-
-        if (! $jurnal) {
-            return response()->json(['status' => false, 'message' => 'Jurnal tidak ditemukan'], 404);
-        }
-
-        if ($jurnal->user_id !== $request->user()->id) {
-            return response()->json(['status' => false, 'message' => 'Akses ditolak. Bukan jurnal milik Anda.'], 403);
-        }
-
-        $validated = $request->validate([
-            'kategori_id' => 'sometimes|required|exists:kategoris,id',
-            'tanggal' => 'sometimes|required|date',
-            'judul' => 'sometimes|required|string|max:255',
-            'deskripsi' => 'sometimes|required|string',
-            'status' => 'nullable|in:todo,proses,selesai,disetujui,ditolak',
-            'kendala' => 'nullable|string',
+            'status' => 'success',
+            'data' => $jurnal->load(['kategori', 'user', 'komentars']),
         ]);
-
-        $jurnal->update($validated);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Jurnal berhasil diperbarui',
-            'data' => new JurnalResource($jurnal->load('kategori')),
-        ], 200);
     }
 
-    public function destroy(Request $request, $id)
+    public function update(UpdateJurnalRequest $request, Jurnal $jurnal)
     {
-        $jurnal = Jurnal::find($id);
+        $this->authorize('update', $jurnal);
 
-        if (! $jurnal) {
-            return response()->json(['status' => false, 'message' => 'Jurnal tidak ditemukan'], 404);
-        }
+        $jurnal->update($request->validated());
 
-        if ($jurnal->user_id !== $request->user()->id) {
-            return response()->json(['status' => false, 'message' => 'Akses ditolak. Bukan jurnal milik Anda.'], 403);
-        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Jurnal berhasil diperbarui',
+            'data' => $jurnal,
+        ]);
+    }
+
+    public function destroy(Jurnal $jurnal)
+    {
+        $this->authorize('delete', $jurnal);
 
         $jurnal->delete();
 
         return response()->json([
-            'status' => true,
+            'status' => 'success',
             'message' => 'Jurnal berhasil dihapus',
-        ], 200);
+        ]);
     }
 }
