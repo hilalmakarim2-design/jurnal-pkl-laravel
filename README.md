@@ -4,17 +4,17 @@ Aplikasi web dan REST API berbasis Laravel untuk pencatatan, pemantauan, evaluas
 
 ## Fitur Utama
 
-* **Autentikasi & Manajemen Role:** Pembagian hak akses antara **Peserta PKL** dan **Pembimbing PKL** (web session dan Laravel Sanctum token).
-* **Manajemen Jurnal Harian:** Peserta dapat membuat, melihat, memperbarui, mencari/memfilter, dan menghapus catatan kegiatan harian berdasarkan kategori.
-* **Evaluasi & Komentar Pembimbing:** Pembimbing dapat meninjau seluruh jurnal peserta, memberikan status evaluasi, serta menambahkan catatan/komentar.
-* **Dashboard Statistik:** Ringkasan jumlah jurnal dan aktivitas sesuai masing-masing role.
-* **Export Laporan:** Fitur unduh rekap laporan jurnal untuk keperluan dokumentasi PKL.
-* **REST API & Kontainerisasi Docker:** Endpoint API terproteksi Sanctum lengkap dengan koleksi Postman dan konfigurasi Docker Compose.
+- **Autentikasi & Manajemen Role:** Pembagian hak akses antara **Peserta PKL** dan **Pembimbing PKL** (web session dan Laravel Sanctum token).
+- **Manajemen Jurnal Harian:** Peserta dapat membuat, melihat, memperbarui, mencari/memfilter, dan menghapus catatan kegiatan harian berdasarkan kategori.
+- **Evaluasi & Komentar Pembimbing:** Pembimbing dapat meninjau seluruh jurnal peserta, memberikan status evaluasi, serta menambahkan catatan/komentar.
+- **Dashboard Statistik:** Ringkasan jumlah jurnal dan aktivitas sesuai masing-masing role.
+- **Export Laporan:** Fitur unduh rekap laporan jurnal dalam format PDF untuk keperluan dokumentasi PKL.
+- **REST API & Kontainerisasi Docker:** Endpoint API terproteksi Sanctum lengkap dengan koleksi Postman dan konfigurasi Docker Compose.
 
 ## Kebutuhan Sistem
 
-* **Opsi Docker:** Docker Desktop (Docker Engine & Docker Compose)
-* **Opsi Manual:** PHP >= 8.2, Composer, MySQL 8.0 / MariaDB, Node.js & NPM
+- **Opsi Docker:** Docker Desktop (Docker Engine & Docker Compose)
+- **Opsi Manual:** PHP >= 8.2, Composer, MySQL 8.0 / MariaDB, Node.js & NPM
 
 ---
 
